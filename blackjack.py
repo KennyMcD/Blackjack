@@ -4,6 +4,7 @@ Created on Mon Oct 21 11:17:17 2019
 
 @author: Kenneth McDonnell
 """
+import random
 ACE = 11
 K = 10
 Q = 10
@@ -42,6 +43,9 @@ class Deck:
         self.appendSuit("heart")
         self.appendSuit("spade")
         
+    def shuffle(self):
+        random.shuffle(self.cards)
+        
     def dumpDeck(self):
         cards = 0
         for i in range(MAX_CARDS):
@@ -53,5 +57,6 @@ class Deck:
 cards = []
 deck = Deck(cards, MAX_CARDS)
 deck.createDeck()
+deck.shuffle()
 deck.dumpDeck()
 
