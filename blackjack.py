@@ -80,33 +80,80 @@ class Hand:
         self.numCards += 1
         hand.append(self.deck.getCard())
         
-    # Start hand by drawing twice and adding ranks of cards
+        return hand
+    
+    # Counts the value of the current player's hand
     def handValue(self, hand):
         handVal = 0
+        ace = 0
         for i in range(self.numCards):
             handVal += cardVal[hand[i].getRank()]
-        print(handVal)
+            if (hand[i].getRank() == 'A'):
+                ace += 1        
+        # Handles aces; also handles if 2 or more aces are drawn
+        while (handVal > 21 and ace > 0):
+            handVal -= 10
+            ace -= 1
         return handVal
-    
+   
     def dumpHand(self, hand):
         for i in range(self.numCards):
             print(str(hand[i].getRank()) + " " + str(hand[i].getSuit()) + '\n')
         
 
-        
+class Player:
+        def __init__(self, hand, deck):
+            self.hand = Hand(deck)
+            self.currHand = []
+            self.stay = False
+            self.bust = False
+            self.blackjack = False
+        # Player draws one card, if hand value > 21 player busts
+        def hit(self):
+            self.hand.draw(self.currHand)
+            handVal = self.hand.handValue(self.currHand)
+            
+            if (handVal > 21):
+                self.bust = True
+            elif (handVal == 21):
+                self.blackjack = True
+            
+        # Starts the player by drawing 2 cards and checking for blackjack
+        def startingHand(self):
+            # Draw 2 cards
+            self.hit()
+            self.hit()
+            #self.hand.dumpHand(self.currHand)
+            # Blackjack check
+            self.hit()
+            self.hand.dumpHand(self.currHand)    
+            handVal = self.hand.handValue(self.currHand)
+            print(handVal)
+            if (handVal == 21):
+                self.blackjack = True
+            elif (handVal > 21):
+                print("bust")
+            
+# Creates deck          
 cards = []
 deck = Deck(cards, MAX_CARDS)
 deck.createDeck()
 deck.shuffle()
 #deck.getCard()
 #deck.dumpDeck()
-playerHand = []
+
+# Creates human player
+playerHand = Hand(deck)
+player = Player(playerHand, deck)
+player.startingHand()
+'''
 hand = Hand(deck)
 hand.draw(playerHand)
 hand.draw(playerHand)
 hand.handValue(playerHand)
 hand.dumpHand(playerHand)
 #deck.dumpDeck()
+
 print("Welcome to Blackjack!")
 choice = input("1) Start \n2) Rules\n3) Exit\n")
 if choice == 1:
@@ -116,3 +163,4 @@ elif choice == 2:
     print("rules")
 elif choice == 3:
     exit
+'''
