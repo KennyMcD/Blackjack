@@ -112,12 +112,15 @@ class Player:
         def hit(self):
             self.hand.draw(self.currHand)
             handVal = self.hand.handValue(self.currHand)
+           
             
             if (handVal > 21):
+                print('bust')
                 self.bust = True
             elif (handVal == 21):
+                print('blackjack')
                 self.blackjack = True
-            
+              
         # Starts the player by drawing 2 cards and checking for blackjack
         def startingHand(self):
             # Draw 2 cards
@@ -125,15 +128,31 @@ class Player:
             self.hit()
             #self.hand.dumpHand(self.currHand)
             # Blackjack check
-            self.hit()
-            self.hand.dumpHand(self.currHand)    
+            #self.hand.dumpHand(self.currHand)    
             handVal = self.hand.handValue(self.currHand)
-            print(handVal)
+            #print(handVal)
             if (handVal == 21):
                 self.blackjack = True
-            elif (handVal > 21):
-                print("bust")
             
+        def setStay(self):
+            self.stay = True
+            
+        
+        def getStay(self):
+            return self.stay
+        
+        def getBust(self):
+            return self.bust
+        
+        def getBlackjack(self):
+            return self.blackjack
+        
+        def dumpPlayerHand(self):
+            self.hand.dumpHand(self.currHand) 
+            handVal = self.hand.handValue(self.currHand)
+           
+            print(handVal)    
+        
 # Creates deck          
 cards = []
 deck = Deck(cards, MAX_CARDS)
@@ -145,7 +164,11 @@ deck.shuffle()
 # Creates human player
 playerHand = Hand(deck)
 player = Player(playerHand, deck)
+'''
 player.startingHand()
+player.hit()
+player.dumpPlayerHand()
+'''
 '''
 hand = Hand(deck)
 hand.draw(playerHand)
@@ -153,14 +176,24 @@ hand.draw(playerHand)
 hand.handValue(playerHand)
 hand.dumpHand(playerHand)
 #deck.dumpDeck()
-
+'''
 print("Welcome to Blackjack!")
 choice = input("1) Start \n2) Rules\n3) Exit\n")
-if choice == 1:
+
+if choice == '1':
     #start game
-    print("start")
-elif choice == 2:
+    player.startingHand()
+    
+    while (player.getStay() != True):
+        player.dumpPlayerHand()
+        play = input("1) Hit\n2) Stay")
+        if (play == '1'):
+            player.hit()
+        elif (play == '2'):
+            player.setStay()
+            
+    player.dumpPlayerHand()    
+elif choice == '2':
     print("rules")
-elif choice == 3:
+elif choice == '3':
     exit
-'''
