@@ -189,7 +189,131 @@ class Dealer(Player):
         print("│         │")
         print("│       "+"{0:2s}".format(r)+"│")
         print("└─────────┘")
+        
+
+class Game():
+    def __init__(self):
+        self.cards = []
+        self.deck = Deck(self.cards, MAX_CARDS)
+        self.deck.createDeck()
+        self.deck.shuffle()
+        self.playerHand = Hand(self.deck)
+        self.player = Player(self.playerHand, self.deck)   
+        self.dealerHand = Hand(self.deck)
+        self.dealer = Dealer(self.dealerHand, self.deck)   
+        
+    def runGame(self):
+        # Running the game
+        print("Welcome to Blackjack!")
+        choice = input("1) Start \n2) Exit\n")
+        
+        if choice == '1':
+            playagain = True
+            while (playagain == True):
+                # Start game
+                # Dealer Draw
+                print("Dealer's Peek")
+                self.dealer.startingHand()
+                self.dealer.peekFirst() # Print dealer's first card
+                print('\n')
+                # Player turn
+                print("Human's turn")
+                self.player.startingHand()
+                # Allows the player to stay or hit until they bust or get blackjack
+                while (self.player.getStay() != True):
+                    self.player.dumpPlayerHand()
+                    # Loop menu for human player
+                    play = input("1) Hit\n2) Stay\n")
+                    # Hit
+                    if (play == '1'):
+                        self.player.hit()
+                        if (self.player.getBust() == True):
+                            print("Human Bust")
+                            self.player.setStay()
+                        elif (self.player.getBlackjack() == True):
+                            print("Human Blackjack")
+                            self.player.setStay()
+                    # Stay
+                    elif (play == '2'):
+                        self.player.setStay()
+                playerVal = self.player.dumpPlayerHand() # Print player's hand
             
+                # Dealer turn
+                print("\nDealer's turn")
+                dealerVal = self.dealer.dumpPlayerHand() # Reveal dealer's hand
+                # Checking if player gets blackjack on starting hand
+                if (self.player.handSize() == 2 and self.player.getBlackjack() == True and self.dealer.getBlackjack() == False):
+                    print("Human wins!")
+                    # Checking if dealer gets blackjack on starting hand
+                elif (self.dealer.getBlackjack() == True and self.player.getBlackjack() == False):
+                    print("Dealer Wins!")
+                # Both players have blackjack on their starting hands
+                elif (self.player.handSize() == 2 and self.player.getBlackjack() == True and self.dealer.getBlackjack() == True):
+                    print("Tie game!")
+                else:
+                    # Dealer hits when hand value is less than 17
+                    while (dealerVal < 17):
+                        self.dealer.hit()
+                        dealerVal = self.dealer.dumpPlayerHand()
+                        print("\n")
+                    self.dealer.setStay()
+                    # Cases for if either player has blackjack or busts
+                
+                    # Dealer busts, player stayed or has blackjack
+                    if (self.dealer.getBust() == True and self.player.getBust() == False):
+                        print("Dealer Bust") 
+                        print("Human Wins!")
+                    # Player busts, dealer stayed or has blackjack
+                    elif (self.dealer.getBust() == False and self.player.getBust() == True):
+                        print("Human Bust") 
+                        print("Dealer Wins!")
+                    # Dealer has blackjack and the player doesn't or busts
+                    elif (self.dealer.getBlackjack() == True and self.player.getBlackjack() == False):
+                        print("Dealer Blackjack")
+                        print("Dealer Wins!")
+                    # Both players bust; dealer wins
+                    elif (self.dealer.getBust() == True and self.player.getBust() == True):  
+                        print("Dealer Wins!")
+                    # Both players reach blackjack after hitting        
+                    elif (self.dealer.getBlackjack() == True and self.player.getBlackjack() == True):
+                        print("Tie Game!")
+                    else:   
+                        # Comparing hand values if no player busts or gets blackjack
+                        if (dealerVal < playerVal):
+                            print("Player Wins!")
+                        elif (dealerVal > playerVal):
+                            print("Dealer Wins!")
+                        elif (dealerVal == playerVal):
+                            print("Tie Game!")
+                        
+                pa = input("Play again?(y/n) ")
+                # Restart the game; instantiate new objects
+                if (pa == 'y'):
+                    playagain = True
+                    # Creates deck          
+                    cards = []
+                    self.deck = Deck(cards, MAX_CARDS)
+                    self.deck.createDeck()
+                    self.deck.shuffle()
+        
+                    # Creates human player
+                    playerHand = Hand(self.deck)
+                    self.player = Player(playerHand, self.deck)
+        
+                    # Creates dealer player
+                    dealerHand = Hand(self.deck)
+                    self.dealer = Dealer(dealerHand, self.deck)
+                # End game
+                else:
+                    playagain = False
+                    print("Goodbye")        
+        else:
+            print("See you next time!")
+        
+       
+game = Game()
+game.runGame()
+'''
 # Creates deck          
 cards = []
 deck = Deck(cards, MAX_CARDS)
@@ -207,6 +331,10 @@ dealerHand = Hand(deck)
 dealer = Dealer(dealerHand, deck)
 
 # Running the game
+
+        
+        
+        
 print("Welcome to Blackjack!")
 choice = input("1) Start \n2) Exit\n")
 
@@ -311,3 +439,4 @@ if choice == '1':
             print("Goodbye")        
 else:
     print("See you next time!")
+'''
