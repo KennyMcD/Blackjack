@@ -5,7 +5,7 @@
  
     - To run the software simply compile the program
     
-    - Pess 1 to start the game or 2 to exit
+    - Press 1 to start the game or 2 to exit
     
     - Press 1 to hit or 2 to stay 
     
