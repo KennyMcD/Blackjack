@@ -3,15 +3,15 @@
  
  Running the software:
  
-    - To run the software simply compile the program
-    
-    - Press 1 to start the game or 2 to exit
-    
-    - Press 1 to hit or 2 to stay 
-    
-    - The dealers turn will then commence
-    
-    - The results of the game will be printed
-    
-    - To play again press y or to end game press n
-    
+ IDE - Execute the program and it will prompt user to start the game.
+ 
+ UNIX - To use the bash script files copy the following commands into the console where the program folder is located.
+ 
+        - chmod u+x bjrun 
+        
+        - chmod u+x bjrunIO
+        
+   bjrun will simply execute the program in the console and prompt the user for input
+       
+   bjrunIO will create a file "output.txt" and run 3 tests, it will print the output of all the tests within the txt file
+
