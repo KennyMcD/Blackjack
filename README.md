@@ -11,7 +11,7 @@
         
         - chmod u+x bjrunIO
         
-   bjrun will simply execute the program in the console and prompt the user for input
+   ./bjrun will simply execute the program in the console and prompt the user for input
        
-   bjrunIO will create a file "output.txt" and run 3 tests, it will print the output of all the tests within the txt file
+   ./bjrunIO will create a file "output.txt" and run 3 tests, it will print the output of all the tests within the txt file
 
