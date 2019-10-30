@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 echo   "Creating output.txt"
 echo   "Run 1: 0 Hits"
 printf "1\n2\nn" | python3 blackjack.py >> output.txt 
