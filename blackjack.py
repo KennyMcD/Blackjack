@@ -7,7 +7,7 @@ Next Century Project Submission
 import random
 # Dictionary for card values
 cardVal = {
-        'A': 11,  
+        'A': 11,
         '2': 2,
         '3': 3,
         '4': 4,
@@ -44,7 +44,7 @@ class Card:
     # Return:  suit
     def getSuit(self):
         return self.suit
-    
+
 """
 Creates a deck object so players can draw; keeps track of cards remaining
 
@@ -56,13 +56,13 @@ class Deck:
         self.cardsLeft = MAX_CARDS
 
     # Purpose: Appends set of 13 cards based on suit to cards array
-    # Input:   suit 
+    # Input:   suit
     # Return:  n/a
     def appendSuit(self, suit):
         for key in cardVal.keys():
-            self.cards.append(Card(suit, key)) 
+            self.cards.append(Card(suit, key))
 
-    # Purpose: Creates deck array by calling appendSuit for every suit          
+    # Purpose: Creates deck array by calling appendSuit for every suit
     # Input:   n/a
     # Return:  n/a
     def createDeck(self):
@@ -71,7 +71,7 @@ class Deck:
         self.appendSuit("♥")
         self.appendSuit("♠")
 
-    # Purpose: Shuffle the deck in random order; uses random library      
+    # Purpose: Shuffle the deck in random order; uses random library
     # Input:   n/a
     # Return:  n/a
     def shuffle(self):
@@ -80,7 +80,7 @@ class Deck:
     # Purpose: Return card; remove it from deck
     # Input:   n/a
     # Return:  card object from top of deck
-    def getCard(self):
+    def dealCard(self):
         self.cardsLeft -= 1
         return self.cards.pop()
 
@@ -103,14 +103,17 @@ class Hand:
         self.deck = deck
         self.numCards = 0
 
+    def setNumCards(self, cards):
+        self.numCards = cards
+        
     # Purpose: Adds one card to a player's hand
     # Input:   player's hand
     # Return:  updated player's hand with new card
     def draw(self, hand):
         self.numCards += 1
-        hand.append(self.deck.getCard())
+        hand.append(self.deck.dealCard())
         return hand
-    
+
     # Purpose: Calculates value of player's current hand; handles aces
     # Input:   player's hand
     # Return:  value of player's hand
@@ -120,14 +123,14 @@ class Hand:
         for i in range(self.numCards):
             handVal += cardVal[hand[i].getRank()]
             if (hand[i].getRank() == 'A'):
-                ace += 1        
+                ace += 1
         # Handles aces; also handles if 2 or more aces are drawn
         while (handVal > 21 and ace > 0):
             handVal -= 10
             ace -= 1
         return handVal
 
-    # Purpose: Prints player's hand with string formatting 
+    # Purpose: Prints player's hand with string formatting
     # Input:   player's hand
     # Return:  n/a
     def dumpHand(self, hand):
@@ -144,7 +147,7 @@ class Hand:
             print("│         │")
             print("│       "+"{0:2s}".format(r)+"│")
             print("└─────────┘")
-                    
+
 
 """
 Player object; can hit or stay; checks for blackjack on initial hand
@@ -165,12 +168,12 @@ class Player:
         def hit(self):
             self.hand.draw(self.currHand)
             handVal = self.hand.handValue(self.currHand)
-            # Checks for blackjack  
+            # Checks for blackjack
             if (handVal > 21):
                 self.bust = True
             elif (handVal == 21):
                 self.blackjack = True
-              
+
         # Purpose: Draws two cards for player and checks for blackjack
         # Input:   n/a
         # Return:  n/a
@@ -217,13 +220,13 @@ class Player:
         # Input:   n/a
         # Return:  returns current hand value
         def dumpPlayerHand(self):
-            self.hand.dumpHand(self.currHand) 
+            self.hand.dumpHand(self.currHand)
             handVal = self.hand.handValue(self.currHand)
-            print(handVal)  
+            print(handVal)
             return handVal
 
 """
-Dealer class which inherits player; Dealer is a player, although they show 
+Dealer class which inherits player; Dealer is a player, although they show
 their first card in hand.
 
 @author Kenneth McDonnell
@@ -251,7 +254,7 @@ class Dealer(Player):
         print("│         │")
         print("│       "+"{0:2s}".format(r)+"│")
         print("└─────────┘")
-        
+
 """
 Creates Game object which starts, runs, and ends game based on win conditions
 
@@ -264,10 +267,10 @@ class Game():
         self.deck.createDeck()
         self.deck.shuffle()
         self.playerHand = Hand(self.deck)
-        self.player = Player(self.playerHand, self.deck)   
+        self.player = Player(self.playerHand, self.deck)
         self.dealerHand = Hand(self.deck)
         self.dealer = Dealer(self.dealerHand, self.deck)
-        
+
     # Purpose: Runs the main menu and main game loop; checks for win conditions
     # Input:   n/a
     # Return:  n/a
@@ -275,7 +278,7 @@ class Game():
         # Running the game
         print("Welcome to Blackjack!")
         choice = input("1) Start \n2) Exit\n")
-        
+
         if choice == '1':
             playagain = True
             while (playagain == True):
@@ -306,7 +309,7 @@ class Game():
                     elif (play == '2'):
                         self.player.setStay()
                 playerVal = self.player.dumpPlayerHand() # Print player's hand
-            
+
                 # Dealer turn
                 print("\nDealer's turn")
                 dealerVal = self.dealer.dumpPlayerHand() # Reveal dealer's hand
@@ -328,26 +331,26 @@ class Game():
                         print("\n")
                     self.dealer.setStay()
                     # Cases for if either player has blackjack or busts
-                
+
                     # Dealer busts, player stayed or has blackjack
                     if (self.dealer.getBust() == True and self.player.getBust() == False):
-                        print("Dealer Bust") 
+                        print("Dealer Bust")
                         print("Human Wins!")
                     # Player busts, dealer stayed or has blackjack
                     elif (self.dealer.getBust() == False and self.player.getBust() == True):
-                        print("Human Bust") 
+                        print("Human Bust")
                         print("Dealer Wins!")
                     # Dealer has blackjack and the player doesn't or busts
                     elif (self.dealer.getBlackjack() == True and self.player.getBlackjack() == False):
                         print("Dealer Blackjack")
                         print("Dealer Wins!")
                     # Both players bust; dealer wins
-                    elif (self.dealer.getBust() == True and self.player.getBust() == True):  
+                    elif (self.dealer.getBust() == True and self.player.getBust() == True):
                         print("Dealer Wins!")
-                    # Both players reach blackjack after hitting        
+                    # Both players reach blackjack after hitting
                     elif (self.dealer.getBlackjack() == True and self.player.getBlackjack() == True):
                         print("Tie Game!")
-                    else:   
+                    else:
                         # Comparing hand values if no player busts or gets blackjack
                         if (dealerVal < playerVal):
                             print("Player Wins!")
@@ -355,32 +358,35 @@ class Game():
                             print("Dealer Wins!")
                         elif (dealerVal == playerVal):
                             print("Tie Game!")
-                        
+
                 pa = input("Play again?(y/n) ")
                 # Restart the game; instantiate new objects
                 if (pa == 'y'):
                     playagain = True
-                    # Creates deck          
+                    # Creates deck
                     cards = []
                     self.deck = Deck(cards, MAX_CARDS)
                     self.deck.createDeck()
                     self.deck.shuffle()
-        
+
                     # Creates human player
                     playerHand = Hand(self.deck)
                     self.player = Player(playerHand, self.deck)
-        
+
                     # Creates dealer player
                     dealerHand = Hand(self.deck)
                     self.dealer = Dealer(dealerHand, self.deck)
                 # End game
                 else:
                     playagain = False
-                    print("Goodbye")        
+                    print("Goodbye")
         else:
             print("See you next time!")
-        
-# Main        
-game = Game()
-game.runGame()
 
+def main():
+    # Main
+    game = Game()
+    game.runGame()
+
+if __name__ == "__main__":
+    main()
