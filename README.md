@@ -18,7 +18,7 @@
    This will create a file "output.txt" and run 3 tests, it will print the output of all the tests within the txt file.
   
 Unit Tests - 
-   IDE - Execute blackjack_test.py
+   IDE - Execute the file blackjack_test.py
  
    UNIX - 
      To run the file.
