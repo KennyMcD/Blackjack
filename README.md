@@ -1,5 +1,5 @@
 # Blackjack - Kenneth McDonnell
- Blackjack game - Next Century Coding Project
+ Blackjack game
  
  Running the software:
  
