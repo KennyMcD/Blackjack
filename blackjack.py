@@ -1,6 +1,4 @@
 """
-Next Century Project Submission
-
 @author: Kenneth McDonnell
 """
 import random

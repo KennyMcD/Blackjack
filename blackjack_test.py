@@ -1,6 +1,4 @@
 """
-Created on Sun Nov  3 13:58:28 2019
-
 @author: kenny
 """
 import blackjack
